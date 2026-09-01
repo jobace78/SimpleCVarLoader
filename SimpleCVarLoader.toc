@@ -1,0 +1,7 @@
+## Author: jobace78
+## Interface: 120100
+## SavedVariables: SimpleCVarLoader
+## Title: SimpleCVarLoader
+## Version: v20260901
+
+SimpleCVarLoader.lua

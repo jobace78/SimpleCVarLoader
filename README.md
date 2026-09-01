@@ -4,6 +4,11 @@
 
 This is mine and mine alone...
 
+## Resources
+
+* [IntelliJ-IDEA-Lua-IDE-WoW-API](https://github.com/Ellypse/IntelliJ-IDEA-Lua-IDE-WoW-API)
+* [wow-ui-source](https://github.com/Gethe/wow-ui-source)
+
 ## License
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
