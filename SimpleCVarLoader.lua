@@ -1,8 +1,5 @@
 -- SimpleCVarLoader.lua
 
-SimpleCVarLoader             = SimpleCVarLoader or {}
-SimpleCVarLoader.profiles    = SimpleCVarLoader.profiles or {}
-
 local NAME                   = "SimpleCVarLoader"
 local FAIL_MESSAGE_PREFIX    = "|cffff4444[SimpleCVarLoader]|r"
 local SUCCESS_MESSAGE_PREFIX = "|cff00ccff[SimpleCVarLoader]|r"
@@ -25,6 +22,15 @@ local function getActiveProfile()
     return getProfile(activeProfile)
 end
 
+local function initializeSavedVariables()
+    SimpleCVarLoader = SimpleCVarLoader or {}
+    SimpleCVarLoader.profiles = SimpleCVarLoader.profiles or {}
+    for _profileName, currentProfile in pairs(SimpleCVarLoader.profiles) do
+        currentProfile.cvars = currentProfile.cvars or {}
+        currentProfile.tweaks = currentProfile.tweaks or {}
+    end
+end
+
 local function applyProfile(profileName)
     local currentProfile = getProfile(profileName)
     local failCounter = 0
@@ -41,8 +47,11 @@ local function applyProfile(profileName)
             failCounter = failCounter + 1
         end
     end
-    for _tweakName, tweakCode in pairs(currentProfile.tweaks) do
-        RunScript(tweakCode)
+    for tweakName, tweakCode in pairs(currentProfile.tweaks) do
+        local success, err = pcall(RunScript, tweakCode)
+        if not success then
+            print(FAIL_MESSAGE_PREFIX .. " Tweak <" .. tweakName .. "> failed: " .. tostring(err))
+        end
     end
     activeProfile = profileName
     SimpleCVarLoader.activeProfile = profileName
@@ -144,15 +153,14 @@ cvarSlashCommand.set = function(args)
     end
     local defaultValue = C_CVar.GetCVarDefault(cvar)
     local existed = currentProfile.cvars[cvar] ~= nil
-    currentProfile.cvars[cvar] = value
     if C_CVar.SetCVar(cvar, value) then
         local valueColor = (defaultValue and value == defaultValue) and "|cff00ff00" or "|cffff8800"
         local defaultInfo = defaultValue and "|cffaaaaaa(" .. defaultValue .. ")|r" or "|cffaaaaaa(N/A)|r"
+        currentProfile.cvars[cvar] = value
         print(SUCCESS_MESSAGE_PREFIX ..
             " " ..
             cvar .. " = " .. valueColor .. value .. "|r " .. defaultInfo .. (existed and " (updated)" or " (added)"))
     else
-        currentProfile.cvars[cvar] = nil
         print(FAIL_MESSAGE_PREFIX .. " Invalid CVar: " .. cvar)
     end
 end
@@ -297,16 +305,22 @@ end
 ---@diagnostic disable-next-line: missing-parameter
 local frame = CreateFrame("Frame", NAME .. "Frame")
 
+frame:RegisterEvent("ADDON_LOADED")
+
 frame:RegisterEvent("PLAYER_LOGIN")
 
 ---@diagnostic disable-next-line: undefined-field
 frame:SetScript(
-    "OnEvent", function(_self, event)
-        if event == "PLAYER_LOGIN" then
+    "OnEvent", function(_self, event, addOnName)
+        if event == "ADDON_LOADED" and addOnName == NAME then
+            initializeSavedVariables()
+            frame:UnregisterEvent("ADDON_LOADED")
+        elseif event == "PLAYER_LOGIN" then
             local currentProfileName = SimpleCVarLoader.activeProfile
             if currentProfileName and getProfile(currentProfileName) then
                 applyProfile(currentProfileName)
             else
+                SimpleCVarLoader.activeProfile = nil
                 print(FAIL_MESSAGE_PREFIX .. " No active profile.")
             end
         end

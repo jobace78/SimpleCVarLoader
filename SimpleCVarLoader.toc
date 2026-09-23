@@ -1,7 +1,8 @@
 ## Author: jobace78
 ## Interface: 120100
+## Notes: Stores CVar values in named profiles and reapplies the active one at every login. Profiles can also carry Lua tweaks.
 ## SavedVariables: SimpleCVarLoader
 ## Title: SimpleCVarLoader
-## Version: v20260901
+## Version: v20260923
 
 SimpleCVarLoader.lua

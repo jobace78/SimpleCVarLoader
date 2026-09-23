@@ -11,3 +11,5 @@ Thumbs.db
 .idea/
 
 ### DO NOT MODIFY ABOVE THIS LINE ###
+
+.vscode/tasks.json
