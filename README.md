@@ -91,6 +91,7 @@ Extract the archive into `World of Warcraft/_retail_/Interface/AddOns/SimpleCVar
 ```
 World of Warcraft/_retail_/Interface/AddOns/
 └── SimpleCVarLoader/
+    ├── icon.png
     ├── LICENSE
     ├── README.md
     ├── SimpleCVarLoader.lua

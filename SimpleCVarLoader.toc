@@ -1,4 +1,5 @@
 ## Author: jobace78
+## IconTexture: Interface\AddOns\SimpleCVarLoader\icon.png
 ## Interface: 120100
 ## Notes: Stores CVar values in named profiles and reapplies the active one at every login. Profiles can also carry Lua tweaks.
 ## SavedVariables: SimpleCVarLoader
