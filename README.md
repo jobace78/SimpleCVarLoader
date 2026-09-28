@@ -5,8 +5,6 @@
 A World of Warcraft addon that stores CVar values in named profiles and reapplies the active one
 at every login. Profiles can also carry Lua snippets ("tweaks") for settings no CVar exposes.
 
-No configuration window, no dependencies: one slash command does everything.
-
 ## Features
 
 * Named profiles, each with its own CVars and tweaks
